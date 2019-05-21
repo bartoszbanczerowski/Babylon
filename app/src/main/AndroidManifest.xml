@@ -9,6 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="3e96286963eb368e0c3b88768a623fd0be197cbd"/>
+
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"

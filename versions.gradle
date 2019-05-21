@@ -1,0 +1,13 @@
+/* #############################################
+ *
+ * When changing Kotlin version please also see:
+ * buildSrc -> ... -> Dependencies.kt
+ *
+ * #############################################
+ */
+ext {
+    kotlinVersion = '1.3.21'
+    androidGradleVersion = '3.4.1'
+    fabricGradleVersion = '1.29.0'
+    playServicesGradleVersion = '4.0.1'
+}
