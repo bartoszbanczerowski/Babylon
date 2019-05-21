@@ -1,0 +1,25 @@
+buildscript {
+    apply from: '../versions.gradle'
+    repositories {
+        google()
+        jcenter()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+    }
+}
+
+apply plugin: 'kotlin'
+
+repositories {
+    google()
+    jcenter()
+}
+
+dependencies {
+    implementation "com.android.tools.build:gradle:$androidGradleVersion"
+    implementation gradleApi()
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
+}
+
