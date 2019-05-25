@@ -1,24 +1,32 @@
-package eu.mobilebear.babylon
+package eu.mobilebear.babylon.presentation.social.view
 
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.Menu
 import android.view.MenuItem
-
+import dagger.android.support.DaggerAppCompatActivity
+import eu.mobilebear.babylon.R
+import eu.mobilebear.babylon.presentation.social.navigator.SocialNavigator
+import eu.mobilebear.babylon.presentation.social.viewmodel.SocialViewModel
+import eu.mobilebear.babylon.util.ViewModelFactory
 import kotlinx.android.synthetic.main.activity_main.*
+import javax.inject.Inject
 
-class MainActivity : AppCompatActivity() {
+class SocialActivity : DaggerAppCompatActivity() {
+
+    @Inject
+    lateinit var socialNavigator: SocialNavigator
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+
+    lateinit var viewModel: SocialViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-        }
+        viewModel = viewModelFactory.create(SocialViewModel::class.java)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
