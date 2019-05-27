@@ -100,7 +100,7 @@ class SocialActivity : DaggerAppCompatActivity() {
     private fun showNetworkError() {
         generalError.visibility = View.GONE
         networkError.visibility = View.VISIBLE
-        errorDescription.text = "Network Error"
+        errorDescription.text = getString(R.string.network_error)
         errorDescription.visibility = View.VISIBLE
         retryButton.visibility = View.VISIBLE
     }
@@ -108,7 +108,7 @@ class SocialActivity : DaggerAppCompatActivity() {
     private fun showGeneralError() {
         generalError.visibility = View.VISIBLE
         networkError.visibility = View.GONE
-        errorDescription.text = "Something went wrong"
+        errorDescription.text = getString(R.string.something_went_wrong)
         errorDescription.visibility = View.VISIBLE
         retryButton.visibility = View.VISIBLE
     }
