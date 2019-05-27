@@ -22,10 +22,13 @@ class NetworkingModule {
     companion object {
         private const val REQUEST_HEADER_USER_AGENT_KEY = "User-Agent"
         private const val REQUEST_HEADER_USER_AGENT_VALUE = "Android"
-        private const val HOST = "http://jsonplaceholder.typicode.com/"
-        private const val CONNECT_TIMEOUT = 60L
-        private const val READ_TIMEOUT = 60L
-        private const val WRITE_TIMEOUT = 60L
+        private const val REQUEST_HEADER_ACCEPT = "Content-type"
+        private const val REQUEST_HEADER_CONTENT_TYPE = "Content-type"
+        private const val REQUEST_HEADER_APPLICATION_JSON = "application/json"
+        private const val HOST = "https://jsonplaceholder.typicode.com/"
+        private const val CONNECT_TIMEOUT: Long = 60
+        private const val READ_TIMEOUT: Long = 60
+        private const val WRITE_TIMEOUT: Long = 60
     }
 
     @Provides
@@ -39,28 +42,28 @@ class NetworkingModule {
     @Provides
     @Singleton
     fun provideHeaderInterceptor(): Interceptor = Interceptor { chain ->
-            val originalRequest = chain.request()
-            val request = originalRequest.newBuilder()
-                    .header(
-                        REQUEST_HEADER_USER_AGENT_KEY,
-                        REQUEST_HEADER_USER_AGENT_VALUE
-                    )
-                    .build()
-            chain.proceed(request)
-        }
-
+        val originalRequest = chain.request()
+        val request = originalRequest.newBuilder()
+            .header(REQUEST_HEADER_USER_AGENT_KEY, REQUEST_HEADER_USER_AGENT_VALUE)
+            .header(REQUEST_HEADER_ACCEPT, REQUEST_HEADER_APPLICATION_JSON)
+            .header(REQUEST_HEADER_CONTENT_TYPE, REQUEST_HEADER_APPLICATION_JSON)
+            .build()
+        chain.proceed(request)
+    }
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(loggingInterceptor: HttpLoggingInterceptor,
-                            headerInterceptor: Interceptor): OkHttpClient =
-            OkHttpClient.Builder()
-                    .addInterceptor(headerInterceptor)
-                    .addNetworkInterceptor(loggingInterceptor)
-                    .connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)
-                    .readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
-                    .writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS)
-                    .build()
+    fun provideOkHttpClient(
+        loggingInterceptor: HttpLoggingInterceptor,
+        headerInterceptor: Interceptor
+    ): OkHttpClient =
+        OkHttpClient.Builder()
+            .addInterceptor(headerInterceptor)
+            .addNetworkInterceptor(loggingInterceptor)
+            .connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)
+            .readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
+            .writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS)
+            .build()
 
     @Provides
     @Singleton
@@ -71,14 +74,15 @@ class NetworkingModule {
     @Provides
     @Singleton
     fun provideRetrofit(moshi: Moshi, okHttpClient: OkHttpClient): Retrofit =
-            Retrofit.Builder()
-                    .baseUrl(HOST)
-                    .client(okHttpClient)
-                    .addConverterFactory(MoshiConverterFactory.create(moshi))
-                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                    .build()
+        Retrofit.Builder()
+            .baseUrl(HOST)
+            .client(okHttpClient)
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .build()
 
     @Provides
     @Singleton
-    fun provideSocialService(retrofit: Retrofit): SocialService = retrofit.create(SocialService::class.java)
+    fun provideSocialService(retrofit: Retrofit): SocialService =
+        retrofit.create(SocialService::class.java)
 }

@@ -5,6 +5,7 @@ object Versions {
     const val androidxCoreVersion = "1.0.2"
     const val constraintLayoutVersion = "1.1.3"
     const val androidMaterialVersion = "1.0.0"
+    const val androidxMotionLayoutVersion = "2.0.0-beta1"
     const val daggerVersion = "2.22.1"
     const val rxKotlinVersion = "2.3.0"
     const val rxAndroidVersion = "2.1.1"
@@ -18,6 +19,7 @@ object Versions {
     const val junitVersion = "4.12"
     const val androidxTestRunnerVersion = "1.1.1"
     const val androidxEspressoVersion = "3.1.1"
+    const val lottieVersion = "3.0.3"
 }
 
 object Libs {
@@ -26,6 +28,7 @@ object Libs {
     val androidxCore = "androidx.core:core-ktx:${Versions.androidxCoreVersion}"
     val constraintLayout = "androidx.constraintlayout:constraintlayout:${Versions.constraintLayoutVersion}"
     val androidMaterial = "com.google.android.material:material:${Versions.androidMaterialVersion}"
+    val androidxMotionLayout = "androidx.constraintlayout:constraintlayout:${Versions.androidxMotionLayoutVersion}"
 
     val dagger = "com.google.dagger:dagger:${Versions.daggerVersion}"
     val daggerCompiler = "com.google.dagger:dagger-compiler:${Versions.daggerVersion}"
@@ -47,6 +50,7 @@ object Libs {
 
     val picasso = "com.squareup.picasso:picasso:${Versions.picassoVersion}"
     val timber = "com.jakewharton.timber:timber:${Versions.timberVersion}"
+    val lottie = "com.airbnb.android:lottie:${Versions.lottieVersion}"
 
     val crashlytics = "com.crashlytics.sdk.android:crashlytics:${Versions.crashlyticsVersion}@aar"
 
