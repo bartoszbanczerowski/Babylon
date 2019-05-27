@@ -23,6 +23,10 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        vectorDrawables.useSupportLibrary = true
+        multiDexEnabled true
+
     }
     buildTypes {
         release {
@@ -36,6 +40,17 @@ android {
     }
 }
 
+configurations.all {
+    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+        def requested = details.requested
+        if (requested.group == "androidx") {
+            if (!requested.name.startsWith("multidex")) {
+                details.useVersion "${targetSdk}.+"
+            }
+        }
+    }
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation Libs.kotlin
@@ -43,6 +58,7 @@ dependencies {
     implementation Libs.androidxCore
     implementation Libs.constraintLayout
     implementation Libs.androidMaterial
+    implementation Libs.androidxMotionLayout
 
     implementation Libs.dagger
     kapt Libs.daggerCompiler
@@ -64,6 +80,7 @@ dependencies {
 
     implementation Libs.picasso
     implementation Libs.timber
+    implementation Libs.lottie
 
     implementation(Libs.crashlytics) {
         transitive = true;
