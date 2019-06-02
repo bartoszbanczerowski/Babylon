@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
+        app:cardBackgroundColor="@color/cardViewBackground"
         app:cardUseCompatPadding="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -19,30 +20,65 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:foreground="?android:attr/selectableItemBackground">
 
             <TextView
                 android:id="@+id/postItemTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="8dp"
-                android:text="Veruca Salt"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/postItemImage"
-                app:layout_constraintTop_toTopOf="@+id/postItemImage" />
-
-            <ImageView
-                android:id="@+id/postItemImage"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_launcher_foreground"
-                tools:srcCompat="@drawable/ic_launcher_foreground" />
+                tools:text="Clegan Bowl" />
+
+            <TextView
+                android:id="@+id/postItemBy"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="@string/item_post_by"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                app:layout_constraintEnd_toStartOf="@id/postItemUserName"
+                app:layout_constraintTop_toBottomOf="@id/postItemTitle" />
+
+            <TextView
+                android:id="@+id/postItemUserName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                app:layout_constraintEnd_toStartOf="@id/postItemFrom"
+                app:layout_constraintTop_toBottomOf="@id/postItemTitle"
+                tools:text="User Name" />
+
+            <TextView
+                android:id="@+id/postItemFrom"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="@string/item_post_from"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                app:layout_constraintEnd_toStartOf="@id/postItemUserCompany"
+                app:layout_constraintTop_toBottomOf="@id/postItemTitle" />
+
+            <TextView
+                android:id="@+id/postItemUserCompany"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/postItemTitle"
+                tools:text="Google" />
 
             <TextView
                 android:id="@+id/postItemDescription"
@@ -52,11 +88,132 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
-                android:text="Random"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/postItemImage"
-                app:layout_constraintTop_toBottomOf="@+id/postItemTitle" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/postItemUserName"
+                tools:text="The Hound fight with Mountain at the top tower of Kingslanding and won." />
+
+            <TextView
+                android:id="@+id/postItemContact"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/post_item_contact"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                app:layout_constraintTop_toBottomOf="@+id/postItemDescription" />
+
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/postItemImagePhone"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:src="@drawable/ic_mobile"
+                android:tint="@color/colorAccent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/postItemContact" />
+
+            <TextView
+                android:id="@+id/postItemUserPhone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:autoLink="phone"
+                app:layout_constraintStart_toEndOf="@id/postItemImagePhone"
+                app:layout_constraintTop_toBottomOf="@+id/postItemContact"
+                tools:text="+ 48 123 456 789" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/postItemImageEmail"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:src="@drawable/ic_email"
+                android:tint="@color/colorAccent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/postItemImagePhone" />
+
+            <TextView
+                android:id="@+id/postItemUserEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:autoLink="email"
+                app:layout_constraintStart_toEndOf="@id/postItemImageEmail"
+                app:layout_constraintTop_toBottomOf="@+id/postItemImagePhone"
+                tools:text="sandordclegane@kingslanding.com" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/postItemImageAddress"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:src="@drawable/ic_map"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/postItemImageEmail" />
+
+            <TextView
+                android:id="@+id/postItemUserAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:autoLink="map"
+                android:background="?selectableItemBackground"
+                app:layout_constraintStart_toEndOf="@id/postItemImageWeb"
+                app:layout_constraintTop_toBottomOf="@+id/postItemImageEmail"
+                tools:text="London 24-123, Main Street 24" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/postItemImageWeb"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:src="@drawable/ic_web"
+                android:tint="@color/colorAccent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/postItemImageAddress" />
+
+            <TextView
+                android:id="@+id/postItemUserWebsite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:autoLink="web"
+                app:layout_constraintStart_toEndOf="@id/postItemImageWeb"
+                app:layout_constraintTop_toBottomOf="@+id/postItemImageAddress"
+                app:layout_constraintBottom_toBottomOf="parent"
+                tools:text="www.google.pl" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,10 +1,11 @@
 package eu.mobilebear.babylon.domain.model
 
 import androidx.annotation.StringDef
+import eu.mobilebear.babylon.networking.response.responsedata.Comment
 import eu.mobilebear.babylon.networking.response.responsedata.Post
 
-data class PostsValidationModel(
-    val posts: List<Post>,
+data class SocialValidationModel(
+    val posts: List<SocialPost>,
     @PostsStatus val status: String
 ) {
     companion object {

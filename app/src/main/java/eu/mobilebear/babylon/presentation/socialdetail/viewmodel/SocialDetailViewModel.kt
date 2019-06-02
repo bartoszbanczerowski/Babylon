@@ -1,4 +1,4 @@
-package eu.mobilebear.babylon.presentation.social.viewmodel
+package eu.mobilebear.babylon.presentation.socialdetail.viewmodel
 
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
@@ -11,7 +11,7 @@ import eu.mobilebear.babylon.util.state.NetworkStatus
 import io.reactivex.observers.DisposableSingleObserver
 import javax.inject.Inject
 
-class SocialViewModel @Inject constructor(private val getSocialPostsUseCase: GetSocialPostsUseCase) :
+class SocialDetailViewModel @Inject constructor(private val getSocialPostsUseCase: GetSocialPostsUseCase) :
     ViewModel() {
 
     @VisibleForTesting
