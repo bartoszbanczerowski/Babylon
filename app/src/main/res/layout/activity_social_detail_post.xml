@@ -5,8 +5,7 @@
     android:id="@+id/motion_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    app:layoutDescription="@xml/activity_social_detail_motion_layout">
+    android:fitsSystemWindows="true">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/postItemCardView"
@@ -104,9 +103,9 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
                 android:text="@string/post_item_contact"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/postItemDescription" />
 
 
@@ -211,9 +210,9 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
                 android:autoLink="web"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/postItemImageWeb"
                 app:layout_constraintTop_toBottomOf="@+id/postItemImageAddress"
-                app:layout_constraintBottom_toBottomOf="parent"
                 tools:text="www.google.pl" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -226,10 +225,10 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        app:layout_constraintTop_toBottomOf="@id/postItemCardView"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/postItemCardView"
         tools:listitem="@layout/item_comment" />
 
     <include layout="@layout/view_status" />
