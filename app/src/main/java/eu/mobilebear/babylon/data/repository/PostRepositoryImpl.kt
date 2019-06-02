@@ -9,7 +9,6 @@ import eu.mobilebear.babylon.util.ConnectionChecker
 import eu.mobilebear.babylon.util.NetworkException
 import io.reactivex.Single
 import retrofit2.Response
-import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -55,16 +54,13 @@ constructor(
     private fun mapPostResponse(response: Response<Post>): PostValidationModel {
         val isResponseSuccessful = response.isSuccessful && response.body() != null
 
-        return if (isResponseSuccessful) {
-            if (response.body() == null) {
-                mapPostError()
-            } else {
-                PostValidationModel(response.body()!!, PostValidationModel.POST_DOWNLOADED)
-            }
+        return if (isResponseSuccessful && response.body() != null) {
+            PostValidationModel(response.body()!!, PostValidationModel.POST_DOWNLOADED)
         } else {
             mapPostError()
         }
     }
 
-    private fun mapPostError(): PostValidationModel = PostValidationModel(Post(-1,-1, "", ""), PostsValidationModel.GENERAL_ERROR)
+    private fun mapPostError(): PostValidationModel = PostValidationModel(Post(), PostsValidationModel.GENERAL_ERROR)
 }
+

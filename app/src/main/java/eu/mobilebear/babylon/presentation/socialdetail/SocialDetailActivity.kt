@@ -78,24 +78,23 @@ class SocialDetailActivity : DaggerAppCompatActivity() {
         postItemUserName.text = post?.username
         postItemUserPhone.text = post?.phone
 
-        if (post?.username != null && post.username!!.isNotEmpty()) {
+        if (post?.username != null && post.username.isNotEmpty()) {
             postItemUserName.text = post.username
         } else {
             postItemBy.visibility = View.GONE
         }
 
-        if (post?.company != null && post.company!!.name.isNotEmpty()) {
-            postItemUserCompany.text = post.company?.name
+        if (post?.company != null && post.company.name.isNotEmpty()) {
+            postItemUserCompany.text = post.company.name
         } else {
             postItemFrom.visibility = View.GONE
         }
 
         postItemUserAddress.text = post?.address?.city + " " + post?.address?.zipcode + ", " + post?.address?.suite + " " + post?.address?.suite
         postItemUserAddress.setOnClickListener {
-            if (post?.address?.geoLocation?.lat != null && post?.address?.geoLocation?.lng != null)
                 socialNavigator.goToMap(
-                    post.address?.geoLocation?.lat!!,
-                    post.address?.geoLocation?.lng!!
+                    post?.address?.geoLocation?.lat!!,
+                    post.address.geoLocation.lng
                 )
         }
 

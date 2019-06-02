@@ -1,12 +1,9 @@
 package eu.mobilebear.babylon.data.repository
 
-import eu.mobilebear.babylon.domain.model.PostValidationModel
-import eu.mobilebear.babylon.domain.model.PostsValidationModel
 import eu.mobilebear.babylon.domain.model.UserValidationModel
 import eu.mobilebear.babylon.domain.model.UsersValidationModel
 import eu.mobilebear.babylon.domain.repository.UserRepository
 import eu.mobilebear.babylon.networking.SocialService
-import eu.mobilebear.babylon.networking.response.responsedata.Post
 import eu.mobilebear.babylon.networking.response.responsedata.User
 import eu.mobilebear.babylon.util.ConnectionChecker
 import eu.mobilebear.babylon.util.NetworkException
@@ -42,9 +39,9 @@ constructor(
 
         return if (isResponseSuccessful) {
             if (response.body()!!.isEmpty()) {
-                UsersValidationModel(response.body()!!, PostsValidationModel.NO_POSTS)
+                UsersValidationModel(response.body()!!, UsersValidationModel.NO_USERS)
             } else {
-                UsersValidationModel(response.body()!!, PostsValidationModel.POSTS_DOWNLOADED)
+                UsersValidationModel(response.body()!!, UsersValidationModel.USERS_DOWNLOADED)
             }
         } else {
             mapUsersError()
@@ -68,5 +65,4 @@ constructor(
     }
 
     private fun mapUserError(): UserValidationModel = UserValidationModel(User(), UserValidationModel.GENERAL_ERROR)
-
 }

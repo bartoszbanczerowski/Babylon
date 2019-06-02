@@ -24,7 +24,4 @@ interface SocialService {
 
     @GET("comments")
     fun getComments(): Single<Response<List<Comment>>>
-
-    @GET("comments/{id}")
-    fun getComment(@Path("id") id: Int): Single<Response<Comment>>
 }

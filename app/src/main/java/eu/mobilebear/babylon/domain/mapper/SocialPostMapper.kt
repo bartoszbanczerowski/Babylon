@@ -9,18 +9,18 @@ import javax.inject.Singleton
 @Singleton
 class SocialPostMapper @Inject constructor() {
 
-    fun transform(post: Post, user: User?): SocialPost {
+    fun transform(post: Post, user: User): SocialPost {
         return SocialPost(
             id = post.id,
             body = post.body,
             title = post.title,
             userId = post.userId,
-            username = user?.username,
-            email = user?.email,
-            address = user?.address,
-            phone = user?.phone,
-            website = user?.website,
-            company = user?.company
+            username = user.username,
+            email = user.email,
+            address = user.address,
+            phone = user.phone,
+            website = user.website,
+            company = user.company
         )
     }
 
@@ -29,13 +29,7 @@ class SocialPostMapper @Inject constructor() {
             id = post.id,
             body = post.body,
             title = post.title,
-            userId = post.userId,
-            username = null,
-            email = null,
-            address = null,
-            phone = null,
-            website = null,
-            company = null
+            userId = post.userId
         )
     }
 }

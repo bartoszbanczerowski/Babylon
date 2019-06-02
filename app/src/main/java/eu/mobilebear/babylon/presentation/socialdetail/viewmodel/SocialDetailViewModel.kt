@@ -1,5 +1,6 @@
 package eu.mobilebear.babylon.presentation.socialdetail.viewmodel
 
+import androidx.annotation.MainThread
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -27,6 +28,7 @@ class SocialDetailViewModel @Inject constructor(private val getSocialPostDetailU
         getSocialPostDetailUseCase.dispose()
     }
 
+    @MainThread
     fun getPost(postId: Int, userId: Int) {
         mutableScreenState.value = ScreenState(null, NetworkStatus.Running)
         getSocialPostDetailUseCase.execute(PostDetailObserver(), PostDetailParamsModel(postId, userId))

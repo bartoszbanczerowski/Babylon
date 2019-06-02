@@ -20,6 +20,8 @@ object Versions {
     const val androidxTestRunnerVersion = "1.1.1"
     const val androidxEspressoVersion = "3.1.1"
     const val lottieVersion = "3.0.3"
+    const val nhaarmanMockitoKotlinVersion = "2.1.0"
+    const val architectureTestingVersion = "1.1.0"
 }
 
 object Libs {
@@ -58,4 +60,6 @@ object Libs {
     val junit = "junit:junit:${Versions.junitVersion}"
     val androidxTestRunner = "androidx.test:runner:${Versions.androidxTestRunnerVersion}"
     val androidxEspresso = "androidx.test.espresso:espresso-core:${Versions.androidxEspressoVersion}"
+    val nhaarmanMockitoKotlin = "com.nhaarman.mockitokotlin2:mockito-kotlin:${Versions.nhaarmanMockitoKotlinVersion}"
+    val architectureTesting = "android.arch.core:core-testing:${Versions.architectureTestingVersion}"
 }

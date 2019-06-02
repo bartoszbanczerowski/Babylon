@@ -5,5 +5,4 @@ import io.reactivex.Single
 
 interface CommentRepository {
     fun requestComments(): Single<CommentsValidationModel>
-    fun requestComment(commentId: Int): Single<CommentsValidationModel>
 }

@@ -9,7 +9,7 @@ data class UsersValidationModel(
     @PostsStatus val status: String
 ) {
     companion object {
-        const val USERS_DOWNLOADED = "POSTS_DOWNLOADED"
+        const val USERS_DOWNLOADED = "USERS_DOWNLOADED"
         const val NO_USERS = "NO_USERS"
         const val GENERAL_ERROR = "GENERAL_ERROR"
 
