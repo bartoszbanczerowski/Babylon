@@ -1,4 +1,4 @@
-package eu.mobilebear.babylon.presentation.social.view
+package eu.mobilebear.babylon.presentation.socialdetail
 
 import android.os.Bundle
 import android.view.Menu
@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.android.support.DaggerAppCompatActivity
 import eu.mobilebear.babylon.R
 import eu.mobilebear.babylon.presentation.social.navigator.SocialNavigator
-import eu.mobilebear.babylon.presentation.social.view.adapter.SocialPostAdapter
+import eu.mobilebear.babylon.presentation.socialdetail.adapter.PostsAdapter
 import eu.mobilebear.babylon.presentation.social.viewmodel.SocialViewModel
 import eu.mobilebear.babylon.presentation.social.viewmodel.SocialViewModel.ScreenState
 import eu.mobilebear.babylon.util.ViewModelFactory
@@ -18,13 +18,13 @@ import kotlinx.android.synthetic.main.activity_social_posts.*
 import kotlinx.android.synthetic.main.view_status.*
 import javax.inject.Inject
 
-class SocialActivity : DaggerAppCompatActivity(), SocialPostOnClickListener {
+class SocialDetailActivity : DaggerAppCompatActivity() {
 
     @Inject
     lateinit var socialNavigator: SocialNavigator
 
     @Inject
-    lateinit var postsAdapter: SocialPostAdapter
+    lateinit var postsAdapter: PostsAdapter
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -43,7 +43,6 @@ class SocialActivity : DaggerAppCompatActivity(), SocialPostOnClickListener {
     }
 
     private fun initView() {
-        postsAdapter.setListener(this)
         val layoutManager = LinearLayoutManager(this)
         postsRecyclerView.adapter = postsAdapter
         postsRecyclerView.layoutManager = layoutManager
@@ -60,14 +59,6 @@ class SocialActivity : DaggerAppCompatActivity(), SocialPostOnClickListener {
             R.id.action_settings -> true
             else -> super.onOptionsItemSelected(item)
         }
-    }
-
-    override fun onSocialPostAddressClicked(lat: String, lng: String) {
-        socialNavigator.goToMap(lat, lng)
-    }
-
-    override fun onSocialPostClicked(postId: Int) {
-        socialNavigator.goToSocialDetail(postId)
     }
 
     private fun updateViewForSuccessNetworkStatus(screenState: ScreenState) {

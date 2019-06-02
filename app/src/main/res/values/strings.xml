@@ -4,4 +4,7 @@
     <string name="something_went_wrong">Something went wrong</string>
     <string name="network_error">Network Error</string>
     <string name="retry_button_action">Retry</string>
+    <string name="item_post_by">By</string>
+    <string name="item_post_from">from</string>
+    <string name="post_item_contact">CONTACT</string>
 </resources>
