@@ -18,7 +18,7 @@
 
         <Constraint
             android:id="@+id/postItemCardView"
-            android:layout_height="@dimen/toolbar_image_height"
+            android:layout_height="wrap_content"
             motion:layout_constraintEnd_toEndOf="parent"
             motion:layout_constraintStart_toStartOf="parent"
             motion:layout_constraintTop_toTopOf="parent" />
@@ -27,10 +27,11 @@
     <ConstraintSet android:id="@+id/end">
         <Constraint
             android:id="@+id/postItemCardView"
-            android:layout_height="30dp"
+            android:layout_height="0dp"
             motion:layout_constraintEnd_toEndOf="parent"
             motion:layout_constraintStart_toStartOf="parent"
             motion:layout_constraintTop_toTopOf="parent" />
+
     </ConstraintSet>
 
 </MotionScene>

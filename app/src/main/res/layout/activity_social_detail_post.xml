@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    app:layoutDescription="@xml/activity_social_motion_layout">
+    app:layoutDescription="@xml/activity_social_detail_motion_layout">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/postItemCardView"
