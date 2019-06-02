@@ -5,12 +5,10 @@ import eu.mobilebear.babylon.domain.mapper.SocialPostMapper
 import eu.mobilebear.babylon.domain.model.CommentsValidationModel
 import eu.mobilebear.babylon.domain.model.PostDetailParamsModel
 import eu.mobilebear.babylon.domain.model.PostValidationModel
-import eu.mobilebear.babylon.domain.model.PostsValidationModel
 import eu.mobilebear.babylon.domain.model.SocialDetailValidationAction
 import eu.mobilebear.babylon.domain.model.SocialDetailValidationModel
 import eu.mobilebear.babylon.domain.model.SocialPost
 import eu.mobilebear.babylon.domain.model.UserValidationModel
-import eu.mobilebear.babylon.domain.model.UsersValidationModel
 import eu.mobilebear.babylon.domain.repository.CommentRepository
 import eu.mobilebear.babylon.domain.repository.PostRepository
 import eu.mobilebear.babylon.domain.repository.UserRepository
@@ -45,8 +43,7 @@ class GetSocialPostDetailUseCase
     private fun mapIntoSocialDetailPost(): Function3<PostValidationModel, UserValidationModel, CommentsValidationModel, SocialDetailValidationAction> =
         Function3 { postsValidationModel, usersValidationModel, commentsValidationModel ->
             when (postsValidationModel.status) {
-                PostsValidationModel.POSTS_DOWNLOADED -> updatePostUsers(postsValidationModel.post, usersValidationModel, commentsValidationModel)
-                PostsValidationModel.NO_POSTS -> SocialDetailValidationAction.NoPost
+                PostValidationModel.POST_DOWNLOADED -> updatePostUsers(postsValidationModel.post, usersValidationModel, commentsValidationModel)
                 else -> SocialDetailValidationAction.GeneralError
             }
 
@@ -59,13 +56,15 @@ class GetSocialPostDetailUseCase
     ): SocialDetailValidationAction {
 
         val socialPost = when (usersValidationModel.status) {
-            UsersValidationModel.USERS_DOWNLOADED -> convertPostAndUser(post, usersValidationModel)
+            UserValidationModel.USER_DOWNLOADED -> convertPostAndUser(post, usersValidationModel)
             else -> convertPostsOnly(post)
         }
 
         return if (commentsValidationModel.status == CommentsValidationModel.COMMENTS_DOWNLOADED) {
+            val filteredComments = commentsValidationModel.comments.filter { comment -> comment.postId == socialPost.id }.toList()
+
             SocialDetailValidationAction.SocialPostDownloaded(
-                SocialDetailValidationModel(socialPost, SocialDetailValidationModel.POST_DOWNLOADED, commentsValidationModel.comments)
+                SocialDetailValidationModel(socialPost, SocialDetailValidationModel.POST_DOWNLOADED, filteredComments)
             )
         } else {
             SocialDetailValidationAction.SocialPostDownloaded(SocialDetailValidationModel(socialPost, SocialDetailValidationModel.POST_DOWNLOADED))

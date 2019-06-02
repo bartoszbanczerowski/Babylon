@@ -8,7 +8,6 @@ import eu.mobilebear.babylon.util.ConnectionChecker
 import eu.mobilebear.babylon.util.NetworkException
 import io.reactivex.Single
 import retrofit2.Response
-import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -25,10 +24,6 @@ constructor(
         return socialService.getComments()
             .map { response -> mapCommentResponse(response) }
             .onErrorReturn { mapCommentsError() }
-    }
-
-    override fun requestComment(commentId: Int): Single<CommentsValidationModel> {
-        return Single.error(IOException("requestComment not implemented"))
     }
 
     private fun mapCommentResponse(response: Response<List<Comment>>): CommentsValidationModel {

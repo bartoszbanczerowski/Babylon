@@ -45,30 +45,30 @@ class SocialPostAdapter @Inject constructor() : ListAdapter<SocialPost, SocialPo
 class SocialPostsViewHolder(val view: View, private val socialPostOnClickListener: SocialPostOnClickListener) : RecyclerView.ViewHolder(view) {
 
     fun bind(post: SocialPost) {
-        view.postItemCardView.setOnClickListener { socialPostOnClickListener.onSocialPostClicked(post.id) }
+        view.postItemCardView.setOnClickListener { socialPostOnClickListener.onSocialPostClicked(post.id, post.userId) }
         view.postItemDescription.text = post.body
         view.postItemTitle.text = post.title
 
-        if (post.company != null && post.company!!.name.isNotEmpty()) {
+        if (post.company.name.isNotEmpty()) {
             view.postItemUserName.text = post.username
         } else {
             view.postItemBy.visibility = View.GONE
         }
 
-        if (post.company != null && post.company!!.name.isNotEmpty()) {
-            view.postItemUserCompany.text = post.company?.name
+        if (post.company.name.isNotEmpty()) {
+            view.postItemUserCompany.text = post.company.name
         } else {
             view.postItemFrom.visibility = View.GONE
         }
 
         view.postItemUserPhone.text = post.phone
-        view.postItemUserAddress.text = post.address?.city + " " + post.address?.zipcode + ", " + post.address?.suite + " " + post.address?.suite
+        view.postItemUserAddress.text = "${post.address.city} ${post.address.zipcode}, ${post.address.suite} ${post.address.suite}"
         view.postItemUserAddress.setOnClickListener {
-            if (post.address?.geoLocation?.lat != null && post.address?.geoLocation?.lng != null)
-                socialPostOnClickListener.onSocialPostAddressClicked(
-                    post.address?.geoLocation?.lat!!,
-                    post.address?.geoLocation?.lng!!
-                )
+            socialPostOnClickListener.onSocialPostAddressClicked(
+                post.address.geoLocation.lat,
+                post.address.geoLocation.lng
+            )
+
         }
         view.postItemUserWebsite.text = post.website
         view.postItemUserEmail.text = post.email

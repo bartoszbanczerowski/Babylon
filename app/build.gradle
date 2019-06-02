@@ -88,6 +88,9 @@ dependencies {
 
     testImplementation Libs.mockito
     testImplementation Libs.junit
+    testImplementation Libs.nhaarmanMockitoKotlin
+    testImplementation Libs.architectureTesting
     androidTestImplementation Libs.androidxTestRunner
     androidTestImplementation Libs.androidxEspresso
+    androidTestImplementation Libs.nhaarmanMockitoKotlin
 }

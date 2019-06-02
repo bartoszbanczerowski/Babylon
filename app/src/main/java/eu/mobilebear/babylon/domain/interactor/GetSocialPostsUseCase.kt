@@ -59,7 +59,9 @@ class GetSocialPostsUseCase
     private fun convertPostsAndUsers(posts: List<Post>, usersValidationModel: UsersValidationModel, socialPosts: MutableList<SocialPost>) {
         posts.forEach {
             val user = usersValidationModel.users.find { user -> it.userId == user.id }
-            socialPosts.add(socialPostMapper.transform(it, user))
+            if(user != null) {
+                socialPosts.add(socialPostMapper.transform(it, user))
+            }
         }
     }
 }

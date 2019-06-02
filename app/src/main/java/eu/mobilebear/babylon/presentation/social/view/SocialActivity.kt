@@ -66,8 +66,8 @@ class SocialActivity : DaggerAppCompatActivity(), SocialPostOnClickListener {
         socialNavigator.goToMap(lat, lng)
     }
 
-    override fun onSocialPostClicked(postId: Int) {
-        socialNavigator.goToSocialDetail(postId)
+    override fun onSocialPostClicked(postId: Int, userId: Int) {
+        socialNavigator.goToSocialDetail(postId, userId)
     }
 
     private fun updateViewForSuccessNetworkStatus(screenState: ScreenState) {

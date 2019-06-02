@@ -9,7 +9,6 @@ import eu.mobilebear.babylon.util.ConnectionChecker
 import eu.mobilebear.babylon.util.NetworkException
 import io.reactivex.Single
 import retrofit2.Response
-import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -30,8 +29,10 @@ constructor(
     }
 
     override fun requestPost(postId: Int): Single<PostValidationModel> {
-        //TODO implement requestPost logic
-        return Single.error(IOException("requestPost not implemented"))
+        if (!connectionChecker.isConnected) return Single.error(NetworkException())
+        return socialService.getPost(postId)
+            .map { response -> mapPostResponse(response) }
+            .onErrorReturn { mapPostError() }
     }
 
     private fun mapPostsResponse(response: Response<List<Post>>): PostsValidationModel {
@@ -49,4 +50,17 @@ constructor(
     }
 
     private fun mapPostsError(): PostsValidationModel = PostsValidationModel(emptyList(), PostsValidationModel.GENERAL_ERROR)
+
+    private fun mapPostResponse(response: Response<Post>): PostValidationModel {
+        val isResponseSuccessful = response.isSuccessful && response.body() != null
+
+        return if (isResponseSuccessful && response.body() != null) {
+            PostValidationModel(response.body()!!, PostValidationModel.POST_DOWNLOADED)
+        } else {
+            mapPostError()
+        }
+    }
+
+    private fun mapPostError(): PostValidationModel = PostValidationModel(Post(), PostsValidationModel.GENERAL_ERROR)
 }
+

@@ -11,7 +11,7 @@ data class SocialDetailValidationModel(
     companion object {
         const val POST_DOWNLOADED = "POST_DOWNLOADED"
         const val NO_POSTS = "NO_POST"
-        const val GENERAL_ERROR = "GENERAL_LIST"
+        const val GENERAL_ERROR = "GENERAL_ERROR"
 
         @Retention(AnnotationRetention.SOURCE)
         @StringDef(POST_DOWNLOADED, NO_POSTS, GENERAL_ERROR)
