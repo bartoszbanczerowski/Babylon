@@ -45,7 +45,7 @@ class SocialPostAdapter @Inject constructor() : ListAdapter<SocialPost, SocialPo
 class SocialPostsViewHolder(val view: View, private val socialPostOnClickListener: SocialPostOnClickListener) : RecyclerView.ViewHolder(view) {
 
     fun bind(post: SocialPost) {
-        view.postItemCardView.setOnClickListener { socialPostOnClickListener.onSocialPostClicked(post.id) }
+        view.postItemCardView.setOnClickListener { socialPostOnClickListener.onSocialPostClicked(post.id, post.userId) }
         view.postItemDescription.text = post.body
         view.postItemTitle.text = post.title
 

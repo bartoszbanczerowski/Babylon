@@ -8,7 +8,8 @@ import eu.mobilebear.babylon.domain.mapper.SocialPostMapper
 import eu.mobilebear.babylon.domain.repository.PostRepository
 import eu.mobilebear.babylon.domain.repository.UserRepository
 import eu.mobilebear.babylon.presentation.social.navigator.SocialNavigator
-import eu.mobilebear.babylon.presentation.socialdetail.adapter.PostsAdapter
+import eu.mobilebear.babylon.presentation.social.view.adapter.SocialPostAdapter
+import eu.mobilebear.babylon.presentation.socialdetail.adapter.CommentsAdapter
 import eu.mobilebear.babylon.rx.RxFactory
 
 @Module
@@ -29,5 +30,8 @@ class SocialModule {
     ): GetSocialPostsUseCase = GetSocialPostsUseCase(postRepository, userRepository, socialPostMapper, rxFactory)
 
     @Provides
-    fun providePostsAdapter() = PostsAdapter()
+    fun provideSocialPostsAdapter() = SocialPostAdapter()
+
+    @Provides
+    fun providePostsAdapter() = CommentsAdapter()
 }

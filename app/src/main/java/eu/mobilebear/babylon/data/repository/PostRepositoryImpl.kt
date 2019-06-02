@@ -30,8 +30,10 @@ constructor(
     }
 
     override fun requestPost(postId: Int): Single<PostValidationModel> {
-        //TODO implement requestPost logic
-        return Single.error(IOException("requestPost not implemented"))
+        if (!connectionChecker.isConnected) return Single.error(NetworkException())
+        return socialService.getPost(postId)
+            .map { response -> mapPostResponse(response) }
+            .onErrorReturn { mapPostError() }
     }
 
     private fun mapPostsResponse(response: Response<List<Post>>): PostsValidationModel {
@@ -49,4 +51,20 @@ constructor(
     }
 
     private fun mapPostsError(): PostsValidationModel = PostsValidationModel(emptyList(), PostsValidationModel.GENERAL_ERROR)
+
+    private fun mapPostResponse(response: Response<Post>): PostValidationModel {
+        val isResponseSuccessful = response.isSuccessful && response.body() != null
+
+        return if (isResponseSuccessful) {
+            if (response.body() == null) {
+                mapPostError()
+            } else {
+                PostValidationModel(response.body()!!, PostValidationModel.POST_DOWNLOADED)
+            }
+        } else {
+            mapPostError()
+        }
+    }
+
+    private fun mapPostError(): PostValidationModel = PostValidationModel(Post(-1,-1, "", ""), PostsValidationModel.GENERAL_ERROR)
 }

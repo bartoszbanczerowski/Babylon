@@ -9,44 +9,50 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.android.support.DaggerAppCompatActivity
 import eu.mobilebear.babylon.R
 import eu.mobilebear.babylon.presentation.social.navigator.SocialNavigator
-import eu.mobilebear.babylon.presentation.socialdetail.adapter.PostsAdapter
-import eu.mobilebear.babylon.presentation.social.viewmodel.SocialViewModel
-import eu.mobilebear.babylon.presentation.social.viewmodel.SocialViewModel.ScreenState
+import eu.mobilebear.babylon.presentation.socialdetail.adapter.CommentsAdapter
+import eu.mobilebear.babylon.presentation.socialdetail.viewmodel.SocialDetailViewModel
 import eu.mobilebear.babylon.util.ViewModelFactory
 import eu.mobilebear.babylon.util.state.NetworkStatus
-import kotlinx.android.synthetic.main.activity_social_posts.*
+import kotlinx.android.synthetic.main.activity_social_detail_post.*
 import kotlinx.android.synthetic.main.view_status.*
 import javax.inject.Inject
 
 class SocialDetailActivity : DaggerAppCompatActivity() {
 
+    companion object {
+        private const val DEFAULT_INVALID_VALUE = -1
+    }
+
     @Inject
     lateinit var socialNavigator: SocialNavigator
 
     @Inject
-    lateinit var postsAdapter: PostsAdapter
+    lateinit var commentsAdapter: CommentsAdapter
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
-    lateinit var viewModel: SocialViewModel
+    lateinit var viewModel: SocialDetailViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_social_posts)
+        setContentView(R.layout.activity_social_detail_post)
 
-        initView()
+        val postId = intent.getIntExtra(SocialNavigator.POST_ID, DEFAULT_INVALID_VALUE)
+        val userId = intent.getIntExtra(SocialNavigator.USER_ID, DEFAULT_INVALID_VALUE)
 
-        viewModel = viewModelFactory.create(SocialViewModel::class.java)
-        viewModel.posts.observe(this, ScreenStateObserver())
-        viewModel.getPosts()
+        initView(postId, userId)
+
+        viewModel = viewModelFactory.create(SocialDetailViewModel::class.java)
+        viewModel.post.observe(this, ScreenStateObserver())
+        viewModel.getPost(postId, userId)
     }
 
-    private fun initView() {
+    private fun initView(postId: Int, userId: Int) {
         val layoutManager = LinearLayoutManager(this)
-        postsRecyclerView.adapter = postsAdapter
-        postsRecyclerView.layoutManager = layoutManager
-        retryButton.setOnClickListener { viewModel.getPosts() }
+        commentsRecyclerView.adapter = commentsAdapter
+        commentsRecyclerView.layoutManager = layoutManager
+        retryButton.setOnClickListener { viewModel.getPost(postId, userId) }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -61,10 +67,39 @@ class SocialDetailActivity : DaggerAppCompatActivity() {
         }
     }
 
-    private fun updateViewForSuccessNetworkStatus(screenState: ScreenState) {
+    private fun updateViewForSuccessNetworkStatus(screenState: SocialDetailViewModel.ScreenState) {
         hideLoadingView()
+        val post = screenState.post
 
-        postsAdapter.submitList(screenState.posts)
+        postItemTitle.text = post?.title
+        postItemDescription.text = post?.body
+        postItemUserEmail.text = post?.email
+        postItemUserWebsite.text = post?.website
+        postItemUserName.text = post?.username
+        postItemUserPhone.text = post?.phone
+
+        if (post?.username != null && post.username!!.isNotEmpty()) {
+            postItemUserName.text = post.username
+        } else {
+            postItemBy.visibility = View.GONE
+        }
+
+        if (post?.company != null && post.company!!.name.isNotEmpty()) {
+            postItemUserCompany.text = post.company?.name
+        } else {
+            postItemFrom.visibility = View.GONE
+        }
+
+        postItemUserAddress.text = post?.address?.city + " " + post?.address?.zipcode + ", " + post?.address?.suite + " " + post?.address?.suite
+        postItemUserAddress.setOnClickListener {
+            if (post?.address?.geoLocation?.lat != null && post?.address?.geoLocation?.lng != null)
+                socialNavigator.goToMap(
+                    post.address?.geoLocation?.lat!!,
+                    post.address?.geoLocation?.lng!!
+                )
+        }
+
+        commentsAdapter.submitList(screenState.comments)
     }
 
     private fun updateViewForRunningNetworkStatus() {
@@ -113,9 +148,9 @@ class SocialDetailActivity : DaggerAppCompatActivity() {
         retryButton.visibility = View.VISIBLE
     }
 
-    private inner class ScreenStateObserver : Observer<ScreenState> {
+    private inner class ScreenStateObserver : Observer<SocialDetailViewModel.ScreenState> {
 
-        override fun onChanged(screenState: ScreenState?) {
+        override fun onChanged(screenState: SocialDetailViewModel.ScreenState?) {
             screenState ?: return
 
             when (screenState.networkStatus) {

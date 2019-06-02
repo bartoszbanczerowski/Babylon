@@ -4,39 +4,41 @@ import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import eu.mobilebear.babylon.domain.interactor.GetSocialPostsUseCase
+import eu.mobilebear.babylon.domain.interactor.GetSocialPostDetailUseCase
+import eu.mobilebear.babylon.domain.model.PostDetailParamsModel
+import eu.mobilebear.babylon.domain.model.SocialDetailValidationAction
 import eu.mobilebear.babylon.domain.model.SocialPost
-import eu.mobilebear.babylon.domain.model.SocialValidationAction
+import eu.mobilebear.babylon.networking.response.responsedata.Comment
 import eu.mobilebear.babylon.util.state.NetworkStatus
 import io.reactivex.observers.DisposableSingleObserver
 import javax.inject.Inject
 
-class SocialDetailViewModel @Inject constructor(private val getSocialPostsUseCase: GetSocialPostsUseCase) :
+class SocialDetailViewModel @Inject constructor(private val getSocialPostDetailUseCase: GetSocialPostDetailUseCase) :
     ViewModel() {
 
     @VisibleForTesting
     internal val mutableScreenState: MutableLiveData<ScreenState> = MutableLiveData()
 
-    val posts: LiveData<ScreenState> by lazy { mutableScreenState }
+    val post: LiveData<ScreenState> by lazy { mutableScreenState }
 
     @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
     public override fun onCleared() {
         super.onCleared()
-        getSocialPostsUseCase.dispose()
+        getSocialPostDetailUseCase.dispose()
     }
 
-    fun getPosts() {
-        mutableScreenState.value = ScreenState(emptyList(), NetworkStatus.Running)
-        getSocialPostsUseCase.execute(PostsObserver())
+    fun getPost(postId: Int, userId: Int) {
+        mutableScreenState.value = ScreenState(null, NetworkStatus.Running)
+        getSocialPostDetailUseCase.execute(PostDetailObserver(), PostDetailParamsModel(postId, userId))
     }
 
     @VisibleForTesting
-    inner class PostsObserver : DisposableSingleObserver<SocialValidationAction>() {
-        override fun onSuccess(action: SocialValidationAction) {
+    inner class PostDetailObserver : DisposableSingleObserver<SocialDetailValidationAction>() {
+        override fun onSuccess(action: SocialDetailValidationAction) {
             when (action) {
-                is SocialValidationAction.SocialPostsDownloaded -> showPosts(action.socialValidationModel.posts)
-                is SocialValidationAction.NoPosts -> showNoPostsInfo()
-                is SocialValidationAction.GeneralError -> showError(null)
+                is SocialDetailValidationAction.SocialPostDownloaded -> showPostAndComments(action.socialValidationModel.post, action.socialValidationModel.comments)
+                is SocialDetailValidationAction.NoPost -> showNoPostsInfo()
+                is SocialDetailValidationAction.GeneralError -> showError(null)
             }
         }
 
@@ -45,22 +47,23 @@ class SocialDetailViewModel @Inject constructor(private val getSocialPostsUseCas
         }
     }
 
-    private fun showPosts(posts: List<SocialPost>) {
+    private fun showPostAndComments(post: SocialPost, comments: List<Comment>) {
         mutableScreenState.value = ScreenState(
-            posts = posts,
-            networkStatus = NetworkStatus.Success
+            post = post,
+            networkStatus = NetworkStatus.Success,
+            comments = comments
         )
     }
 
     private fun showNoPostsInfo() {
         mutableScreenState.value = ScreenState(
-            posts = emptyList(),
+            post = null,
             networkStatus = NetworkStatus.Success
         )
     }
 
     private fun showError(e: Throwable?) {
-        val posts = mutableScreenState.value?.posts
+        val posts = mutableScreenState.value?.post
         mutableScreenState.value = ScreenState(
             posts,
             NetworkStatus.error(e)
@@ -68,7 +71,8 @@ class SocialDetailViewModel @Inject constructor(private val getSocialPostsUseCas
     }
 
     data class ScreenState(
-        val posts: List<SocialPost>?,
-        val networkStatus: NetworkStatus
+        val post: SocialPost?,
+        val networkStatus: NetworkStatus,
+        val comments: List<Comment> = emptyList()
     )
 }

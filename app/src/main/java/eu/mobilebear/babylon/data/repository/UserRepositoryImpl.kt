@@ -1,16 +1,17 @@
 package eu.mobilebear.babylon.data.repository
 
+import eu.mobilebear.babylon.domain.model.PostValidationModel
 import eu.mobilebear.babylon.domain.model.PostsValidationModel
 import eu.mobilebear.babylon.domain.model.UserValidationModel
 import eu.mobilebear.babylon.domain.model.UsersValidationModel
 import eu.mobilebear.babylon.domain.repository.UserRepository
 import eu.mobilebear.babylon.networking.SocialService
+import eu.mobilebear.babylon.networking.response.responsedata.Post
 import eu.mobilebear.babylon.networking.response.responsedata.User
 import eu.mobilebear.babylon.util.ConnectionChecker
 import eu.mobilebear.babylon.util.NetworkException
 import io.reactivex.Single
 import retrofit2.Response
-import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -30,7 +31,10 @@ constructor(
     }
 
     override fun requestUser(userd: Int): Single<UserValidationModel> {
-        return Single.error(IOException("requestUser not implemented"))
+        if (!connectionChecker.isConnected) return Single.error(NetworkException())
+        return socialService.getUser(userd)
+            .map { response -> mapUserResponse(response) }
+            .onErrorReturn { mapUserError() }
     }
 
     private fun mapPostsResponse(response: Response<List<User>>): UsersValidationModel {
@@ -47,5 +51,22 @@ constructor(
         }
     }
 
-    private fun mapUsersError(): UsersValidationModel = UsersValidationModel(emptyList(), PostsValidationModel.GENERAL_ERROR)
+    private fun mapUsersError(): UsersValidationModel = UsersValidationModel(emptyList(), UsersValidationModel.GENERAL_ERROR)
+
+    private fun mapUserResponse(response: Response<User>): UserValidationModel {
+        val isResponseSuccessful = response.isSuccessful && response.body() != null
+
+        return if (isResponseSuccessful) {
+            if (response.body() == null) {
+                mapUserError()
+            } else {
+                UserValidationModel(response.body()!!, UserValidationModel.USER_DOWNLOADED)
+            }
+        } else {
+            mapUserError()
+        }
+    }
+
+    private fun mapUserError(): UserValidationModel = UserValidationModel(User(), UserValidationModel.GENERAL_ERROR)
+
 }

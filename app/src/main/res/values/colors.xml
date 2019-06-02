@@ -3,5 +3,6 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
-    <color name="cardViewBackground">#DDF7F4</color>
+    <color name="postCardViewBackground">#DDF7F4</color>
+    <color name="commentCardViewBackground">#9999CC</color>
 </resources>
